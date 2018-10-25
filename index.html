@@ -36,6 +36,7 @@
             'z':'zhihu.com',
             'm':'mcdonalds.com.cn',
         }
+        //遍历 keys, 生成 kbd 标签
         //x = document.createElement('div')在JS里面向HTML插入div标签
         //y.appendChild(x)给父级标签加子元素（main）
 
@@ -43,15 +44,35 @@
         while(index< keys['length']){   //0 1 2
             divXXX = document.createElement('div')  //创建div放到divxxx里面
             mainXXX.appendChild(divXXX) //把divxxx里面的div作为的子元素放入mainxxx里面
-            row = keys[index]//第一个数组 第二个数组 第三个数组
+            row = keys[index]  //第一个数组 第二个数组 第三个数组
             index2 = 0
             while(index2< row['length']){ //0~9 0~8 0~6
-                kbdXXX = document.createElement('kbd')  //创建kbd放到kbdxxx里面
+                kbdXXX = document.createElement('kbd')  //创建kbd放到kbdxxx里面buttonx = document.createElement('button')  //在kbd里面加一个按钮button
                 kbdXXX.textContent = row[index2]    //kbdxxx里的文字内容为row里的index2
+
+                buttonx = document.createElement('button')  //在kbd里面加一个按钮button
+                buttonx.textContent = '编辑'  //按钮里显示的内容
+
+                buttonx.id = row[index2]   //给每一个button一个id 以示区分点击
+
+                buttonx.onclick = function (zxcv) {  //button被点击的时候执行里面的代码 API
+                    //console.log(buttonx)  //被用户点击的按钮 因为buttonx是一个容器 打出的东西是最后一次显示的
+                    key = zxcv['target']['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
+                    x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
+                    hash[key] = x  //把改后的网址存入hash里
+                }
+                kbdXXX.appendChild(buttonx)
                 divXXX.appendChild(kbdXXX)  //把kbdxxx里面的kbd作为的子元素放入divxxx里面
                 index2 = index2+1
             }
             index = index+1
+        }
+
+        document.onkeypress = function(zxcv){  //监听键盘事件
+            key = zxcv['key'] //从监听键盘事件的API里取 其中的key值 放入变量kye中
+            website = hash[key] //从key中 取对应的hash 其中对应的网站地址 放入变量website中
+            //location.href = 'http://'+website  //全局变量LOCATION 当前地址栏  href地址  帮用户在地址栏里输入的API
+            window.open('http://'+website,'_blank')  //在新窗口打开的API
         }
 
     </script>

@@ -1,7 +1,18 @@
 *{margin: 0; padding: 0;}
 a{text-decoration: none;}
-kbd{border: 1px solid red;width: 2em;height: 2em; display: inline-block;
-    text-transform: uppercase;}
+kbd{border: 1px solid red;width: 5em;height: 5em; display: inline-block;
+    text-transform: uppercase;
+    position: relative;  /*kbd 相对定位*/
+}
+kbd > button{
+    position: absolute;  /*button绝对定位*/
+    right: 0px;  /*放到右下角*/
+    bottom: 0px;  /*放到右下角*/
+    display: none;
+}
+kbd:hover > button{
+    display: inline-block; /*鼠标悬停显示button*/
+}
 main{
     text-align: center;
 }
@@ -9,8 +20,8 @@ main{
     display: inline-block;
 }
 #mainXXX > div:nth-child(2){
-    margin-left: 1em;
+    margin-left: 2em;
 }
 #mainXXX > div:nth-child(3){
-    margin-left: 2em;
+    margin-left: 5em;
 }
