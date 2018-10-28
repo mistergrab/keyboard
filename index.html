@@ -15,13 +15,13 @@
     </main>
     <footer></footer>
     <script>
-        var keys ={
+        keys ={
             '0':['q','w','e','r','t','y','u','i','o','p'],
             '1':['a','s','d','f','g','h','j','k','l'],
             '2':['z','x','c','v','b','n','m'],
             'length':3
         }
-        var hash ={
+        hash ={
             'q':'qq.com',
             'w':'weibo.com',
             'e':'ele.com',
@@ -35,6 +35,10 @@
             's':'sohu.com',
             'z':'zhihu.com',
             'm':'mcdonalds.com.cn',
+        }
+        hashInLocalStorage = JSON.parse(localStorage.getItem('uuu') || 'null')  //取出localStorage 中的 uuu 对应的 hash
+        if(hashInLocalStorage){   //如果取值不为空
+            hash = hashInLocalStorage  //则覆盖原来的hash
         }
         //遍历 keys, 生成 kbd 标签
         //x = document.createElement('div')在JS里面向HTML插入div标签
@@ -60,6 +64,8 @@
                     key = zxcv['target']['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
                     x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
                     hash[key] = x  //把改后的网址存入hash里
+                    localStorage.setItem('uuu', JSON.stringify(hash))//解决刷新页面不能保存变更网址的API 把JS里的变量存入浏览器里面
+                    console.log(hash)
                 }
                 kbdXXX.appendChild(buttonx)
                 divXXX.appendChild(kbdXXX)  //把kbdxxx里面的kbd作为的子元素放入divxxx里面
