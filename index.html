@@ -11,7 +11,10 @@
 <body>
     <header></header>
     <main>
-        <div class="wrapper" id="mainXXX"></div>
+        <style>
+
+        </style>
+        <div class="wrapper" id="main"></div>
     </main>
     <footer></footer>
     <script>
@@ -46,29 +49,30 @@
 
         index = 0
         while(index< keys['length']){   //0 1 2
-            divXXX = document.createElement('div')  //创建div放到divxxx里面
-            mainXXX.appendChild(divXXX) //把divxxx里面的div作为的子元素放入mainxxx里面
+            div = document.createElement('div')  //创建div放到div里面
+            div.className ='row'   //把div框起来命名row
+            main.appendChild(div) //把div里面的div作为的子元素放入main里面
             row = keys[index]  //第一个数组 第二个数组 第三个数组
             index2 = 0
             while(index2< row['length']){ //0~9 0~8 0~6
-                kbdXXX = document.createElement('kbd')  //创建kbd放到kbdxxx里面buttonx = document.createElement('button')  //在kbd里面加一个按钮button
-                kbdXXX.textContent = row[index2]    //kbdxxx里的文字内容为row里的index2
+                kbd = document.createElement('kbd')  //创建kbd放到kbd里面button = document.createElement('button')  //在kbd里面加一个按钮button
+                kbd.textContent = row[index2]    //kbd里的文字内容为row里的index2
+                kbd.className = 'key'   //key的样式
+                button = document.createElement('button')  //在kbd里面加一个按钮button
+                button.textContent = '编辑'  //按钮里显示的内容
 
-                buttonx = document.createElement('button')  //在kbd里面加一个按钮button
-                buttonx.textContent = '编辑'  //按钮里显示的内容
+                button.id = row[index2]   //给每一个button一个id 以示区分点击
 
-                buttonx.id = row[index2]   //给每一个button一个id 以示区分点击
-
-                buttonx.onclick = function (zxcv) {  //button被点击的时候执行里面的代码 API
-                    //console.log(buttonx)  //被用户点击的按钮 因为buttonx是一个容器 打出的东西是最后一次显示的
+                button.onclick = function (zxcv) {  //button被点击的时候执行里面的代码 API
+                    //console.log(button)  //被用户点击的按钮 因为button是一个容器 打出的东西是最后一次显示的
                     key = zxcv['target']['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
                     x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
                     hash[key] = x  //把改后的网址存入hash里
                     localStorage.setItem('uuu', JSON.stringify(hash))//解决刷新页面不能保存变更网址的API 把JS里的变量存入浏览器里面
                     console.log(hash)
                 }
-                kbdXXX.appendChild(buttonx)
-                divXXX.appendChild(kbdXXX)  //把kbdxxx里面的kbd作为的子元素放入divxxx里面
+                kbd.appendChild(button)
+                div.appendChild(kbd)  //把kbd里面的kbd作为的子元素放入div里面
                 index2 = index2+1
             }
             index = index+1
