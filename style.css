@@ -14,7 +14,7 @@ kbd:hover > button{
     display: inline-block; /*鼠标悬停显示button*/
 }
 body{
-    background: grey url(./213468.png) no-repeat center center;
+    background: grey url(./213468.jpg) no-repeat center center;
     background-size: cover;
 }
 main{
