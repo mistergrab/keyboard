@@ -1,7 +1,7 @@
 *{margin: 0; padding: 0;}
 a{text-decoration: none;}
 kbd{border: 1px solid red;width: 5em;height: 5em; display: inline-block;
-    text-transform: uppercase;
+    text-transform: uppercase;  /*将小写字母替换为大写字母*/
     position: relative;  /*kbd 相对定位*/
 }
 kbd > button{

@@ -12,7 +12,6 @@
     <header></header>
     <main>
         <style>
-
         </style>
         <div class="wrapper" id="main"></div>
     </main>
@@ -78,7 +77,7 @@
             index = index+1
         }
 
-        document.onkeypress = function(zxcv){  //监听键盘事件
+        document.onkeypress = function(zxcv){  //监听键盘事件在document里
             key = zxcv['key'] //从监听键盘事件的API里取 其中的key值 放入变量kye中
             website = hash[key] //从key中 取对应的hash 其中对应的网站地址 放入变量website中
             //location.href = 'http://'+website  //全局变量LOCATION 当前地址栏  href地址  帮用户在地址栏里输入的API
