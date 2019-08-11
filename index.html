@@ -17,64 +17,54 @@
     </main>
     <footer></footer>
     <script>
-        keys ={
-            '0':['q','w','e','r','t','y','u','i','o','p'],
-            '1':['a','s','d','f','g','h','j','k','l'],
-            '2':['z','x','c','v','b','n','m'],
-            'length':3
-        }
-        hash ={
-            'q':'qq.com',
-            'w':'weibo.com',
-            'e':'ele.com',
-            'r':'tianya.com',
-            't':'yahoo.cn',
-            'u':'uc.com',
-            'i':'iqiyi.com',
-            'o':'opera.com',
-            'p':undefined,
-            'a':'acfun.tv',
-            's':'sohu.com',
-            'z':'zhihu.com',
-            'm':'mcdonalds.com.cn',
-        }
-        hashInLocalStorage = JSON.parse(localStorage.getItem('uuu') || 'null')  //取出localStorage 中的 uuu 对应的 hash
-        if(hashInLocalStorage){   //如果取值不为空
-            hash = hashInLocalStorage  //则覆盖原来的hash
-        }
+        // 1.初始化数据
+        var hashA = init()
+        var keys = hashA['keys']
+        var hash = hashA['hash']
+
+        //2.生成键盘
         //遍历 keys, 生成 kbd 标签
         //x = document.createElement('div')在JS里面向HTML插入div标签
         //y.appendChild(x)给父级标签加子元素（main）
-
-        index = 0
-        while(index< keys['length']){   //0 1 2
-            div = document.createElement('div')  //创建div放到div里面
+        generateKeyboard(keys,hash)
+        /*var index = 0 //1-初始声明
+        while(index< keys['length']){   //0 1 2 2-判断表达式
+            var div = tag('div' )  //创建div放到div里面,创建一个tag,它的属性是className ='row'
             div.className ='row'   //把div框起来命名row
             main.appendChild(div) //把div里面的div作为的子元素放入main里面
-            row = keys[index]  //第一个数组 第二个数组 第三个数组
-            index2 = 0
+            var row = keys[index]  //第一个数组 第二个数组 第三个数组
+            var index2 = 0
             while(index2< row['length']){ //0~9 0~8 0~6
-                kbd = document.createElement('kbd')//创建kbd放到kbd里面button = document.createElement('button')  //在kbd里面加一个按钮button
-                span = document.createElement('span')
+                var kbd = tag('kbd')//创建kbd放到kbd里面button = document.createElement('button')  //在kbd里面加一个按钮button
+                var span = tag('span')
                 span.textContent = row[index2]    //kbd里的文字内容为row里的index2
                 span.className = 'text'
                 kbd.appendChild(span)
                 kbd.className = 'key'   //key的样式
-                button = document.createElement('button')  //在kbd里面加一个按钮button
+                var button = tag('button')  //在kbd里面加一个按钮button
                 button.textContent = '编辑'  //按钮里显示的内容
 
                 button.id = row[index2]   //给每一个button一个id 以示区分点击
-                img = document.createElement('img')
+                var img = tag('img')
                 if(hash[row[index2]]){
                     img.src = 'http://'+hash[row[index2]] +'/favicon.ico'
                 }else{
                     img.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
                 }
+                img.onerror = function (xxx) {
+                    xxx.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+                                 }
                 button.onclick = function (zxcv) {  //button被点击的时候执行里面的代码 API
                     //console.log(button)  //被用户点击的按钮 因为button是一个容器 打出的东西是最后一次显示的
-                    key = zxcv['target']['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
-                    x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
+                    var button2 = zxcv['target']
+                    var img2 =button2.previousSibling
+                    var key = button2['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
+                    var x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
                     hash[key] = x  //把改后的网址存入hash里
+                    img2.src = 'http://'+ x +'/favicon.ico'
+                    img2.onerror = function (xxx) {
+                        xxx.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+                    }
                     localStorage.setItem('uuu', JSON.stringify(hash))//解决刷新页面不能保存变更网址的API 把JS里的变量存入浏览器里面
                     console.log(hash)
                 }
@@ -83,15 +73,132 @@
                 div.appendChild(kbd)  //把kbd里面的kbd作为的子元素放入div里面
                 index2 = index2+1
             }
-            index = index+1
+            index = index+1//3-给初始变量加1或减1--这就是while循环
+        }*/
+        //3.监听用户动作
+        listenToUser(hash)
+
+        //下面是工具函数
+
+        function getFromLocalStorage(name) {
+            return JSON.parse(localStorage.getItem('name') || 'null')
         }
 
-        document.onkeypress = function(zxcv){  //监听键盘事件在document里
-            key = zxcv['key'] //从监听键盘事件的API里取 其中的key值 放入变量kye中
-            website = hash[key] //从key中 取对应的hash 其中对应的网站地址 放入变量website中
-            //location.href = 'http://'+website  //全局变量LOCATION 当前地址栏  href地址  帮用户在地址栏里输入的API
-            window.open('http://'+website,'_blank')  //在新窗口打开的API
+        function tag(tagName){
+            return document.createElement(tagName)
         }
+
+        function createSpan(textContent) {
+            var span = tag('span')
+            span.textContent = textContent    //kbd里的文字内容为row里的index2
+            span.className = 'text'
+            return span
+        }
+
+        function createButton(id) {
+            var button = tag('button')  //在kbd里面加一个按钮button
+            button.textContent = '编辑'  //按钮里显示的内容
+            button.id = id   //row[index2] //给每一个button一个id 以示区分点击
+            button.onclick = function (zxcv) {  //button被点击的时候执行里面的代码 API
+                //console.log(button)  //被用户点击的按钮 因为button是一个容器 打出的东西是最后一次显示的
+                var button2 = zxcv['target']
+                var img2 =button2.previousSibling
+                var key = button2['id']  //用户点的是什么 target是什么  target 目标  取目标（ID）里的target对应的哈希 存到变量key
+                var x = prompt('给我一个网址')  //把用户输入的网址存到变量x里面（API）
+                hash[key] = x  //把改后的网址存入hash里
+                img2.src = 'http://'+ x +'/favicon.ico'
+                img2.onerror = function (xxx) {
+                    xxx.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+                }
+                localStorage.setItem('uuu', JSON.stringify(hash))//解决刷新页面不能保存变更网址的API 把JS里的变量存入浏览器里面
+            }
+            return button
+        }
+
+        function createImage(domain){
+            var img = tag('img')
+            if(domain){
+                img.src = 'http://'+ domain +'/favicon.ico'
+            }else{
+                img.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+            }
+            img.onerror = function(xxx) {
+                xxx.target.src = '//i.loli.net/2017/11/10/5a05afbc5e183.png'
+            }
+            return img
+
+        }
+        function init() {
+            var keys ={
+                '0':['q','w','e','r','t','y','u','i','o','p'],
+                '1':['a','s','d','f','g','h','j','k','l'],
+                '2':['z','x','c','v','b','n','m'],
+                'length':3
+            }
+            var hash ={
+                'q':'www.qq.com',
+                'w':'www.weibo.com',
+                'e':'www.ele.com',
+                'r':'www.tianya.com',
+                't':'www.taobao.com',
+                'u':'www.uc.cn',
+                'i':'www.iqiyi.com',
+                'o':'www.opera.com',
+                'p':undefined,
+                'a':'www.acfun.cn',
+                's':'www.sohu.com',
+                'z':'www.zhihu.com',
+                'm':'www.mcdonalds.com.cn',
+            }
+            var hashInLocalStorage = getFromLocalStorage('uuu') //取出localStorage 中的 uuu 对应的 hash
+            if(hashInLocalStorage){   //如果取值不为空
+                hash = hashInLocalStorage  //则覆盖原来的hash
+            }
+            return{
+                "keys":keys,
+                "hash":hash
+            }
+        }
+        function generateKeyboard(keys,hash){
+            for(var index = 0;index< keys['length']; index = index+1){//for循环就是把while的三部分提炼出来然后分号隔开
+                var div = tag('div' )  //创建div放到div里面,创建一个tag,它的属性是className ='row'
+                div.className ='row'   //把div框起来命名row
+
+
+                main.appendChild(div) //把div里面的div作为的子元素放入main里面
+
+
+                var row = keys[index]  //第一个数组 第二个数组 第三个数组
+                for(var index2 = 0;index2< row['length'];index2 = index2+1){
+                    var span = createSpan(row[index2])
+
+                    var button = createButton(row[index2])
+
+                    var img = createImage(hash[row[index2]])
+
+                    var kbd = tag('kbd')//创建kbd放到kbd里面button = document.createElement('button')  //在kbd里面加一个按钮button
+                    kbd.className = 'key'   //key的样式
+
+
+                    kbd.appendChild(span)
+                    kbd.appendChild(img)
+                    kbd.appendChild(button)
+
+                    div.appendChild(kbd)  //把kbd里面的kbd作为的子元素放入div里面
+                }
+            }
+
+        }
+        function listenToUser(hash) {
+            document.onkeypress = function(zxcv){  //监听键盘事件在document里
+                var key = zxcv['key'] //从监听键盘事件的API里取 其中的key值 放入变量kye中
+                var website = hash[key] //从key中 取对应的hash 其中对应的网站地址 放入变量website中
+                //location.href = 'http://'+website  //全局变量LOCATION 当前地址栏  href地址  帮用户在地址栏里输入的API
+                window.open('http://'+website,'_blank')  //在新窗口打开的API
+            }
+
+        }
+
 
     </script>
 </body>
